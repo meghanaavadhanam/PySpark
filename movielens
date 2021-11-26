@@ -1,0 +1,44 @@
+!apt-get install openjdk-8-jdk-headless -qq > /dev/null
+
+!wget -q https://www.apache.org/dist/spark/spark-3.1.2/spark-3.1.2-bin-hadoop2.7.tgz
+
+!tar xf spark-3.1.2-bin-hadoop2.7.tgz
+
+!pip install -q findspark
+
+import os
+os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-8-openjdk-amd64"
+os.environ["SPARK_HOME"] = "/content/spark-3.1.2-bin-hadoop2.7"
+
+import findspark
+findspark.init()
+findspark.find()
+
+from pyspark.sql import SparkSession
+spark= SparkSession \
+       .builder \
+       .appName("Our First Spark example") \
+       .getOrCreate()
+
+ratings = spark.read.option("header", "true").csv("/content/ratings.csv", header=True)
+ratings.show(5)
+
+ratings.printSchema()
+
+movies = spark.read.option("header", "true").csv("/content/movies.csv", header=True)
+movies.show(5)
+
+from pyspark.sql.functions import *
+
+most_popular = ratings\
+.groupBy("movie_id")\
+.agg(count("user_id"))\
+.withColumnRenamed("count(user_id)", "num_ratings")\
+.sort(desc("num_ratings"))
+
+most_popular.show()
+
+ratings_by_title = ratings.groupBy("movie_id").agg(avg("rating"))
+
+ratings_by_title.show()
+
