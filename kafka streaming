@@ -15,6 +15,10 @@
   kafka-topics.sh  --list --zookeeper localhost:2181
 </pre>
 
+#highlight your topic 
+
+kafka-topics.sh  --list --zookeeper localhost:2181 | grep meghana_test
+    
 # Terminal 1 - Produce the results
 <pre>
   # Locate the kafka brokers
