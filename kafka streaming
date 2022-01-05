@@ -81,7 +81,7 @@ import json
 # Every 5 seconds
 ssc = StreamingContext(sc, 5)
 
-lines = KafkaUtils.createStream(ssc, 'localhost:2181', "spark-streaming-consumer", {'sandeepgiri9034_test':1})
+lines = KafkaUtils.createStream(ssc, 'cxln1.c.thelab-240901.internal:2181', "spark-streaming-consumer", {'meghana_kafkaa':1})
 
 # Split each line in each batch into words
 words = lines.flatMap(lambda line: line[1].split(" "))
