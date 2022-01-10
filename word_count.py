@@ -5,7 +5,7 @@ from pyspark.streaming import *
 
 sc.setLogLevel("ERROR")
 # Create a local StreamingContext with batch interval of 10 second
-ssc = StreamingContext(sc, 5)
+ssc = StreamingContext(sc, 10)
 
 # Create a DStream that will connect to hostname:port, like localhost:9999
 lines = ssc.socketTextStream("localhost", 9999)
